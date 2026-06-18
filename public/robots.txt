@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin
+Disallow: /filament
+Disallow: /up
+Disallow: /carrito/
+Disallow: /pedido
+
+Sitemap: https://leyendabarber.es/sitemap.xml

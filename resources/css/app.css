@@ -1,0 +1,203 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-heading: 'Cormorant Garamond', Georgia, serif;
+    --color-accent: #991b1b;
+    --color-gold: #b45309;
+}
+
+/* ── Base ─────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body { background-color: #0a0a0a; }
+
+/* ── Typography ───────────────────────────────────────── */
+.font-heading { font-family: var(--font-heading); letter-spacing: 0.01em; font-weight: 600; font-style: italic; }
+
+/* ── Accent line above section titles ─────────────────── */
+.section-title::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 2px;
+    background: #991b1b;
+    margin-bottom: 1rem;
+}
+
+/* ── Card lift on hover ────────────────────────────────── */
+.card-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.6);
+}
+
+/* ── Image zoom on hover ────────────────────────────────── */
+.img-zoom img {
+    transition: transform 0.5s ease;
+}
+.img-zoom:hover img {
+    transform: scale(1.06);
+}
+
+/* ── Cart drawer ───────────────────────────────────────── */
+.cart-drawer {
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.cart-drawer.is-open {
+    transform: translateX(0);
+}
+
+/* ── Masonry grid ──────────────────────────────────────── */
+.masonry {
+    columns: 3;
+    column-gap: 0.75rem;
+}
+.masonry > * {
+    break-inside: avoid;
+    margin-bottom: 0.75rem;
+}
+@media (max-width: 1024px) { .masonry { columns: 2; } }
+@media (max-width: 640px)  { .masonry { columns: 1; } }
+
+/* ── Dense masonry for portfolio galleries ─────────────── */
+.masonry-dense {
+    columns: 5;
+    column-gap: 0.375rem;
+}
+.masonry-dense > * {
+    break-inside: avoid;
+    margin-bottom: 0.375rem;
+}
+@media (max-width: 1280px) { .masonry-dense { columns: 4; } }
+@media (max-width: 1024px) { .masonry-dense { columns: 3; } }
+@media (max-width: 640px)  { .masonry-dense { columns: 2; } }
+
+/* ── Horizontal product scroll ─────────────────────────── */
+.product-scroll {
+    display: flex;
+    gap: 1.25rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    scrollbar-width: none;
+}
+.product-scroll::-webkit-scrollbar { display: none; }
+
+/* ── Red accent underline for nav links ─────────────────── */
+.nav-link {
+    position: relative;
+    padding-bottom: 2px;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: #991b1b;
+    transition: width 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* ── Entrance animation ────────────────────────────────── */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up {
+    animation: fadeInUp 0.45s ease both;
+}
+
+/* ── Button press microinteraction ─────────────────────── */
+.btn-press {
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.btn-press:active {
+    transform: scale(0.97);
+    opacity: 0.88;
+}
+
+/* ── Service row hover ──────────────────────────────────── */
+.service-row {
+    transition: background 0.2s ease;
+    border-radius: 6px;
+}
+.service-row:hover {
+    background: rgba(255,255,255,0.025);
+}
+
+/* ── Logo navbar ─────────────────────────────────────────── */
+@keyframes logoFadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.logo-img {
+    animation: logoFadeIn 0.55s cubic-bezier(0.4, 0, 0.2, 1) both;
+    transition: opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
+    filter: brightness(1);
+}
+
+.logo-link:hover .logo-img {
+    opacity: 0.82;
+    filter: brightness(1.15);
+    transform: scale(1.04);
+}
+
+.logo-link:active .logo-img {
+    transform: scale(0.97);
+    opacity: 0.7;
+}
+
+/* ── Hero gradient text shimmer (subtle) ───────────────── */
+.hero-eyebrow {
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #71717a;
+}
+
+/* ── Scroll reveal ──────────────────────────────────────── */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-reveal].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+[data-stagger] {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.48s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+}
+[data-stagger].in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Accent line expand (scaleX) ────────────────────────── */
+[data-line] {
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.75s cubic-bezier(0.4, 0, 0.2, 1) 0.15s,
+                opacity 0.3s ease;
+    opacity: 0;
+}
+[data-line].in-view {
+    transform: scaleX(1);
+    opacity: 1;
+}
