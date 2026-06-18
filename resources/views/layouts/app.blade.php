@@ -29,11 +29,11 @@
             }
         })();
     </script>
-    {{-- ══ Google Analytics 4 — reemplaza G-XXXXXXXXXX por tu ID real ══ --}}
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    {{-- ══ Google Analytics 4 — reemplaza G-544EE7BMLL por tu ID real ══ --}}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-544EE7BMLL"></script>
     <script>
         gtag('js', new Date());
-        gtag('config', 'G-XXXXXXXXXX', { 'send_page_view': true });
+        gtag('config', 'G-544EE7BMLL', { 'send_page_view': true });
     </script>
 
     <title>@yield('title', 'Leyenda Barber & Tattoo — Barbería y Tatuajes en Madrid y Getafe')</title>
