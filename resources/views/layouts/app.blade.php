@@ -37,8 +37,9 @@
     </script>
 
     <title>@yield('title', 'Leyenda Barber & Tattoo — Barbería y Tatuajes en Madrid y Getafe')</title>
-    <link rel="icon" type="image/png" href="/images/logo.png">
-    <link rel="apple-touch-icon" href="/images/logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('images/logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('images/logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo.png') }}">
     <meta name="description" content="@yield('meta_description', 'Barbería premium y estudio de tatuajes en Madrid y Getafe. Cortes, degradados, realismo, blackwork y fine line. Reserva tu cita en Booksy.')">
     <meta name="keywords" content="barbería Getafe, barbería Madrid, tatuajes Getafe, estudio tatuajes Getafe, corte de pelo Getafe, degradado Madrid, barba, realismo, blackwork, fine line, ropa urbana Getafe, Leyenda Barber Tattoo">
     <meta name="geo.region" content="ES-MD">
@@ -377,13 +378,13 @@
 
     {{-- ════════════════════════ CART DRAWER ════════════════════════ --}}
     <div x-data>
-        <div x-show="$store.cart.open"
+        <div x-show="$store.cart.open" x-cloak
              x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
              x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
              x-on:click="$store.cart.open=false; $store.cart.checkout=false"
              class="fixed inset-0 z-40 bg-black/75 backdrop-blur-sm"></div>
 
-        <div x-show="$store.cart.open"
+        <div x-show="$store.cart.open" x-cloak
              x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
              x-transition:leave="transition ease-in duration-250" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
              class="fixed right-0 top-0 h-full w-full sm:max-w-sm z-50 bg-zinc-950 border-l border-zinc-800/80 flex flex-col shadow-2xl">

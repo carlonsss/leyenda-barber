@@ -175,10 +175,10 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
             </a>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5" data-reveal>
+        <div class="flex gap-4 overflow-x-auto pb-2 sm:grid sm:grid-cols-4 sm:overflow-visible sm:pb-0 snap-x snap-mandatory scrollbar-hide" data-reveal>
             @foreach($services as $service)
             @php $sImg = $img($service->image); @endphp
-            <div class="flex flex-col gap-2.5 group">
+            <div class="flex flex-col gap-2.5 group flex-shrink-0 w-[70vw] sm:w-auto snap-start">
                 <div class="aspect-square rounded overflow-hidden bg-zinc-900 border border-zinc-800 group-hover:border-red-900/50 transition-all duration-300">
                     @if($sImg)
                         <img src="{{ $sImg }}" alt="{{ $service->name }} — Barbería Leyenda Getafe" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
