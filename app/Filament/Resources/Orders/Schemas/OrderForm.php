@@ -7,8 +7,7 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+
 use Filament\Schemas\Schema;
 
 class OrderForm
@@ -61,7 +60,7 @@ class OrderForm
                         ->searchable()
                         ->required()
                         ->live()
-                        ->afterStateUpdated(function ($state, Set $set) {
+                        ->afterStateUpdated(function ($state, $set) {
                             $product = Product::find($state);
                             if ($product) {
                                 $set('price', $product->price);
@@ -71,7 +70,7 @@ class OrderForm
 
                     Select::make('size')
                         ->label('Talla')
-                        ->options(function (Get $get): array {
+                        ->options(function ($get): array {
                             $productId = $get('product_id');
                             if (!$productId) {
                                 return [];
