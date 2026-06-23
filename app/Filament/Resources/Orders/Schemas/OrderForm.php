@@ -98,7 +98,7 @@ class OrderForm
                         ->prefix('€')
                         ->disabled()
                         ->dehydrated(true)
-                        ->afterStateHydrated(function ($state, Set $set, $record) {
+                        ->afterStateHydrated(function ($state, $set, $record) {
                             if ($record && $record->product) {
                                 $set('price', $record->product->price);
                             }
