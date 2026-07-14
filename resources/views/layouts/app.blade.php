@@ -72,7 +72,7 @@
     @endphp
     <script type="application/ld+json">{!! json_encode([
       '@context' => 'https://schema.org',
-      '@type'    => 'HairSalon',
+      '@type'    => ['HairSalon', 'TattooParlor'],
       'name'     => 'Leyenda Barber & Tattoo',
       'description' => 'Barbería premium y estudio de tatuajes en Getafe y Madrid. Cortes, degradados, realismo, blackwork, fine line y ropa streetwear propia.',
       'url'      => url('/'),
@@ -85,7 +85,7 @@
         'addressLocality' => 'Getafe',
         'addressRegion'   => 'Madrid',
         'addressCountry'  => 'ES',
-        'postalCode'      => '28901',
+        'postalCode'      => '28906',
       ],
       'geo' => ['@type' => 'GeoCoordinates', 'latitude' => 40.3044, 'longitude' => -3.7318],
       'openingHoursSpecification' => [
@@ -93,7 +93,7 @@
         ['@type' => 'OpeningHoursSpecification', 'dayOfWeek' => 'Saturday', 'opens' => '10:00', 'closes' => '18:00'],
       ],
       'priceRange' => '€€',
-      'sameAs'    => ['https://www.instagram.com/leyenda_barberia/', 'https://www.instagram.com/leyenda_tattoo06/', 'https://www.instagram.com/leyenda_clothe06/'],
+      'sameAs'    => ['https://www.instagram.com/leyenda_barberia/', 'https://www.instagram.com/leyenda_tattoo06/', 'https://www.instagram.com/leyenda_clothe06/', 'https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
 
     {{-- Google Fonts (non-blocking) --}}
