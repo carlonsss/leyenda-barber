@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /gestion
 Disallow: /admin
 Disallow: /filament
 Disallow: /up
