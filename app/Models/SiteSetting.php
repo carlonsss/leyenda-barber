@@ -20,6 +20,62 @@ class SiteSetting extends Model
         return static::$cache[$key] ?? $default;
     }
 
+    public static function branches(): array
+    {
+        $branches = [
+            [
+                'name'   => static::get('branch1_name', 'Ingenioso Hidalgo'),
+                'addr1'  => static::get('contact_address_line1', 'Av. del Ingenioso Hidalgo, 3'),
+                'addr2'  => static::get('contact_address_line2', '28906 Getafe, Madrid'),
+                'map'    => static::get('contact_map_embed_url'),
+                'booksy' => static::get('booksy_url', 'https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe'),
+            ],
+            [
+                'name'   => static::get('branch2_name', 'Juan Carlos I'),
+                'addr1'  => static::get('contact2_address_line1', 'Av. Juan Carlos I, 16'),
+                'addr2'  => static::get('contact2_address_line2', '28905 Getafe, Madrid'),
+                'map'    => static::get('contact2_map_embed_url'),
+                'booksy' => static::get('booksy_url_2', 'https://booksy.com/es-es/197760_leyenda-barberia_barberia_52975_getafe'),
+            ],
+        ];
+
+        // Contacto y tatuador por sucursal (sucursal 2 vacía = igual que sucursal 1)
+        $phone  = static::get('contact_phone', '+34 600 000 000');
+        $wa     = static::get('contact_whatsapp', '34600000000');
+        $waTat  = static::get('contact_whatsapp_tattoo') ?: $wa;
+        $artist = [
+            'name'  => static::get('tattoo_artist_name', 'Artista Leyenda'),
+            'style' => static::get('tattoo_artist_style', 'Realismo · Blackwork · Fine Line'),
+            'bio'   => static::get('tattoo_artist_bio', 'Tatuador especializado en realismo y diseño personalizado. Cada pieza es única, trabajada con precisión y dedicación.'),
+            'image' => static::get('tattoo_artist_image'),
+        ];
+
+        $branches[0] += ['phone' => $phone, 'whatsapp' => $wa, 'whatsapp_tattoo' => $waTat, 'artist' => $artist];
+        $branches[1] += [
+            'phone'           => static::get('contact2_phone') ?: $phone,
+            'whatsapp'        => static::get('contact2_whatsapp') ?: $wa,
+            'whatsapp_tattoo' => static::get('contact2_whatsapp_tattoo') ?: $waTat,
+            'artist'          => [
+                'name'  => static::get('tattoo2_artist_name') ?: $artist['name'],
+                'style' => static::get('tattoo2_artist_style') ?: $artist['style'],
+                'bio'   => static::get('tattoo2_artist_bio') ?: $artist['bio'],
+                'image' => static::get('tattoo2_artist_image') ?: $artist['image'],
+            ],
+        ];
+
+        foreach ($branches as &$b) {
+            $b['whatsapp']        = preg_replace('/\D/', '', $b['whatsapp']);
+            $b['whatsapp_tattoo'] = preg_replace('/\D/', '', $b['whatsapp_tattoo']);
+            $b['label']           = $b['name'] . ' - ' . $b['addr1'];
+            $query = urlencode($b['addr1'] . ', ' . $b['addr2']);
+            // Si pegaron el iframe entero, quedarse solo con la URL
+            $b['map'] = $b['map'] ? strtok($b['map'], '"') : 'https://maps.google.com/maps?q=' . $query . '&output=embed';
+            $b['directions'] = 'https://www.google.com/maps/dir/?api=1&destination=' . $query;
+        }
+
+        return $branches;
+    }
+
     public static function set(string $key, ?string $value): void
     {
         static::updateOrCreate(['key' => $key], ['value' => $value]);

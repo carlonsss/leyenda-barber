@@ -9,6 +9,11 @@ class TiendaController extends Controller
 {
     public function index()
     {
+        // Botones "Recoger en · Sucursal X" → preselecciona la sucursal en el carrito
+        if (in_array(request('sucursal'), ['1', '2'], true)) {
+            session(['pickup_branch' => (int) request('sucursal')]);
+        }
+
         $products    = Product::where('stock', '>', 0)->latest()->get();
         $bestSellers = $products->where('is_featured', true)->values();
         $newDrop     = $products->where('is_new', true)->values();

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class TattooRequest extends Model
 {
     protected $fillable = [
-        'name', 'email', 'phone',
+        'name', 'email', 'phone', 'branch',
         'tattoo_style_id', 'body_area', 'budget', 'status',
     ];
 

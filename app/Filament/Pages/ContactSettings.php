@@ -53,6 +53,16 @@ class ContactSettings extends Page
             'contact_hours_saturday'     => '10:00 – 18:00',
             'contact_hours_sunday'       => 'Cerrado',
             'contact_map_embed_url'      => null,
+            'branch1_name'               => 'Ingenioso Hidalgo',
+            'booksy_url'                 => 'https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe',
+            'branch2_name'               => 'Juan Carlos I',
+            'contact2_address_line1'     => 'Av. Juan Carlos I, 16',
+            'contact2_address_line2'     => '28905 Getafe, Madrid',
+            'contact2_map_embed_url'     => null,
+            'contact2_phone'             => null,
+            'contact2_whatsapp'          => null,
+            'contact2_whatsapp_tattoo'   => null,
+            'booksy_url_2'               => 'https://booksy.com/es-es/197760_leyenda-barberia_barberia_52975_getafe',
         ];
 
         $saved = SiteSetting::whereIn('key', array_keys($defaults))->pluck('value', 'key')->toArray();
@@ -64,26 +74,31 @@ class ContactSettings extends Page
         return $schema
             ->statePath('data')
             ->components([
-                Section::make('Datos de contacto')
-                    ->columns(2)
+                Section::make('Datos generales')
                     ->schema([
-                        TextInput::make('contact_phone')
-                            ->label('Teléfono')
-                            ->tel(),
                         TextInput::make('contact_email')
                             ->label('Email')
                             ->email(),
-                        TextInput::make('contact_whatsapp')
-                            ->label('WhatsApp principal (barbería / ropa)')
-                            ->hint('Solo dígitos con prefijo país, ej: 34600000000'),
-                        TextInput::make('contact_whatsapp_tattoo')
-                            ->label('WhatsApp tatuadores')
-                            ->hint('Solo dígitos con prefijo país, ej: 34600000000'),
                     ]),
 
-                Section::make('Dirección')
+                Section::make('Sucursal 1')
+                    ->description('Sucursal principal. Su WhatsApp es también el del botón flotante y el footer.')
                     ->columns(2)
                     ->schema([
+                        TextInput::make('branch1_name')
+                            ->label('Nombre de la sucursal'),
+                        TextInput::make('booksy_url')
+                            ->label('Enlace Booksy')
+                            ->url(),
+                        TextInput::make('contact_phone')
+                            ->label('Teléfono')
+                            ->tel(),
+                        TextInput::make('contact_whatsapp')
+                            ->label('WhatsApp barbería / ropa')
+                            ->hint('Ej: 34600000000'),
+                        TextInput::make('contact_whatsapp_tattoo')
+                            ->label('WhatsApp tatuador')
+                            ->hint('Ej: 34600000000'),
                         TextInput::make('contact_address_line1')
                             ->label('Dirección (línea 1)'),
                         TextInput::make('contact_address_line2')
@@ -91,6 +106,37 @@ class ContactSettings extends Page
                         TextInput::make('contact_map_embed_url')
                             ->label('URL embed Google Maps (opcional)')
                             ->helperText('Si el mapa no muestra bien tu dirección, ve a Google Maps → Compartir → Insertar mapa → copia solo la URL del src del iframe y pégala aquí.')
+                            ->placeholder('https://www.google.com/maps/embed?pb=...')
+                            ->columnSpanFull()
+                            ->nullable(),
+                    ]),
+
+                Section::make('Sucursal 2')
+                    ->description('Teléfono y WhatsApp: si los dejas vacíos se usan los de la Sucursal 1.')
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('branch2_name')
+                            ->label('Nombre de la sucursal'),
+                        TextInput::make('booksy_url_2')
+                            ->label('Enlace Booksy')
+                            ->url(),
+                        TextInput::make('contact2_phone')
+                            ->label('Teléfono')
+                            ->tel()
+                            ->placeholder('Igual que Sucursal 1'),
+                        TextInput::make('contact2_whatsapp')
+                            ->label('WhatsApp barbería / ropa')
+                            ->placeholder('Igual que Sucursal 1'),
+                        TextInput::make('contact2_whatsapp_tattoo')
+                            ->label('WhatsApp tatuador')
+                            ->placeholder('Igual que Sucursal 1'),
+                        TextInput::make('contact2_address_line1')
+                            ->label('Dirección (línea 1)'),
+                        TextInput::make('contact2_address_line2')
+                            ->label('Ciudad y CP (línea 2)'),
+                        TextInput::make('contact2_map_embed_url')
+                            ->label('URL embed Google Maps (opcional)')
+                            ->helperText('Google Maps → Compartir → Insertar mapa → copia la URL del src del iframe.')
                             ->placeholder('https://www.google.com/maps/embed?pb=...')
                             ->columnSpanFull()
                             ->nullable(),

@@ -25,6 +25,11 @@ class TattooRequestsTable
                 TextColumn::make('email')
                     ->label('Email')
                     ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('branch')
+                    ->label('Sucursal')
+                    ->badge()
+                    ->color('gray')
+                    ->default('—'),
                 TextColumn::make('style.name')
                     ->label('Estilo')
                     ->badge()

@@ -27,6 +27,10 @@ class TattooRequestForm
                     ->tel()
                     ->nullable(),
 
+                TextInput::make('branch')
+                    ->label('Sucursal')
+                    ->nullable(),
+
                 Select::make('tattoo_style_id')
                     ->label('Estilo de tatuaje')
                     ->options(TattooStyle::query()->pluck('name', 'id'))

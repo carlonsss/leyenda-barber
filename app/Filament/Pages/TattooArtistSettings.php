@@ -43,7 +43,8 @@ class TattooArtistSettings extends Page
 
     public function mount(): void
     {
-        $keys = ['tattoo_artist_name', 'tattoo_artist_bio', 'tattoo_artist_style', 'tattoo_artist_image'];
+        $keys = ['tattoo_artist_name', 'tattoo_artist_bio', 'tattoo_artist_style', 'tattoo_artist_image',
+                 'tattoo2_artist_name', 'tattoo2_artist_bio', 'tattoo2_artist_style', 'tattoo2_artist_image'];
         $saved = SiteSetting::whereIn('key', $keys)->pluck('value', 'key')->toArray();
 
         $defaults = [
@@ -61,7 +62,7 @@ class TattooArtistSettings extends Page
         return $schema
             ->statePath('data')
             ->components([
-                Section::make('Perfil del tatuador')
+                Section::make('Tatuador — Sucursal 1')
                     ->description('Información que aparece en la sección "Nuestros Artistas" de la página de Tatuajes.')
                     ->schema([
                         TextInput::make('tattoo_artist_name')
@@ -78,6 +79,33 @@ class TattooArtistSettings extends Page
                             ->columnSpanFull(),
 
                         FileUpload::make('tattoo_artist_image')
+                            ->label('Foto del artista')
+                            ->image()
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('artists')
+                            ->nullable()
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('Tatuador — Sucursal 2')
+                    ->description('Los campos vacíos usan los datos del tatuador de la Sucursal 1.')
+                    ->schema([
+                        TextInput::make('tattoo2_artist_name')
+                            ->label('Nombre del artista')
+                            ->placeholder('Igual que Sucursal 1'),
+
+                        TextInput::make('tattoo2_artist_style')
+                            ->label('Especialidades (ej: Realismo · Blackwork · Fine Line)')
+                            ->placeholder('Igual que Sucursal 1'),
+
+                        Textarea::make('tattoo2_artist_bio')
+                            ->label('Biografía / descripción')
+                            ->rows(4)
+                            ->placeholder('Igual que Sucursal 1')
+                            ->columnSpanFull(),
+
+                        FileUpload::make('tattoo2_artist_image')
                             ->label('Foto del artista')
                             ->image()
                             ->disk('public')

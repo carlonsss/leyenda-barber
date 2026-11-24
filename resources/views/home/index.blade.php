@@ -101,12 +101,9 @@
         <div class="relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 md:p-10">
             <span class="text-[9px] tracking-[0.4em] uppercase text-zinc-500 mb-2">01</span>
             <h2 class="font-heading text-4xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-none drop-shadow-lg">BARBERÍA</h2>
-            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Cortes precisos, degradados y arreglo de barba en Getafe.</p>
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
-                   class="flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase px-4 py-2.5 rounded transition-colors duration-200 font-medium btn-press">
-                    Reservar cita
-                </a>
+            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Cortes precisos, degradados y arreglo de barba en nuestras 2 sucursales de Getafe.</p>
+            <div class="flex flex-col items-start gap-4">
+                @include('partials.booksy-branches', ['compact' => true])
                 <a href="{{ route('barberia') }}" class="flex items-center gap-2 text-zinc-400 hover:text-white text-xs tracking-widest uppercase transition-all duration-300 hover:gap-4">
                     <span>Ver servicios</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -123,12 +120,9 @@
         <div class="relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 md:p-10">
             <span class="text-[9px] tracking-[0.4em] uppercase text-zinc-500 mb-2">02</span>
             <h2 class="font-heading text-4xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-none drop-shadow-lg">TATUAJES</h2>
-            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Arte permanente y diseño personalizado. Tu idea, nuestra firma.</p>
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('tatuajes') }}#solicitar"
-                   class="flex items-center gap-2 bg-amber-700 hover:bg-amber-600 text-white text-xs tracking-widest uppercase px-4 py-2.5 rounded transition-colors duration-200 font-medium btn-press">
-                    Enviar propuesta
-                </a>
+            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Arte permanente y diseño personalizado en nuestras 2 sucursales de Getafe.</p>
+            <div class="flex flex-col items-start gap-4">
+                @include('partials.booksy-branches', ['type' => 'tatuajes', 'compact' => true])
                 <a href="{{ route('tatuajes') }}" class="flex items-center gap-2 text-zinc-400 hover:text-white text-xs tracking-widest uppercase transition-all duration-300 hover:gap-4">
                     <span>Ver galería</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -145,12 +139,9 @@
         <div class="relative z-10 h-full flex flex-col justify-end p-6 sm:p-8 md:p-10">
             <span class="text-[9px] tracking-[0.4em] uppercase text-zinc-500 mb-2">03</span>
             <h2 class="font-heading text-4xl sm:text-4xl md:text-5xl lg:text-6xl text-white leading-none drop-shadow-lg">ROPA</h2>
-            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Colección propia Leyenda. Estilo urbano con identidad propia.</p>
-            <div class="flex flex-wrap items-center gap-3">
-                <a href="{{ route('tienda') }}"
-                   class="flex items-center gap-2 bg-zinc-700 hover:bg-zinc-600 text-white text-xs tracking-widest uppercase px-4 py-2.5 rounded transition-colors duration-200 font-medium btn-press">
-                    Ver colección
-                </a>
+            <p class="text-sm text-zinc-400 mt-2 mb-5 max-w-xs leading-relaxed">Colección propia Leyenda. Recógela en cualquiera de nuestras 2 sucursales.</p>
+            <div class="flex flex-col items-start gap-4">
+                @include('partials.booksy-branches', ['type' => 'ropa', 'compact' => true])
                 <a href="{{ route('tienda') }}" class="flex items-center gap-2 text-zinc-400 hover:text-white text-xs tracking-widest uppercase transition-all duration-300 hover:gap-4">
                     <span>Explorar tienda</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
@@ -184,7 +175,7 @@
                         <img src="{{ $sImg }}" alt="{{ $service->name }} — Barbería Leyenda Getafe" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
                     @else
                         <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-zinc-800 to-zinc-900">
-                            <svg class="w-8 h-8 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z"/></svg>
+                            <img src="/images/logo.png" alt="Leyenda Barber &amp; Tattoo" class="w-2/3 h-2/3 object-contain opacity-80" loading="lazy">
                         </div>
                     @endif
                 </div>
@@ -393,56 +384,47 @@
 </section>
 @endif
 
-{{-- ═══ CTA DOBLE ═══ --}}
-<section class="grid grid-cols-1 sm:grid-cols-2">
-
-    {{-- Barbería --}}
-    <div class="relative aspect-square sm:aspect-auto sm:min-h-[420px] overflow-hidden bg-zinc-900 group">
-        <div class="absolute inset-0 bg-gradient-to-br from-red-950/60 via-zinc-900 to-black"></div>
-        <div class="absolute inset-0 opacity-[0.05]" style="background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:40px 40px"></div>
-        <div class="relative z-10 flex flex-col h-full justify-between p-8 sm:p-10 md:p-14" data-reveal>
-            <span class="text-[9px] tracking-[0.5em] uppercase text-red-800">Barbería · Leyenda Getafe</span>
+{{-- ═══ CTA TRIPLE — cada servicio con sus 2 sucursales ═══ --}}
+@php
+    $ctas = [
+        ['type' => 'barberia', 'tag' => 'Barbería · 2 Sucursales en Getafe', 'tagColor' => 'text-red-800',
+         'title' => '¿LISTO PARA<br>TU PRÓXIMO<br>CORTE?', 'text' => 'Reserva tu cita online en segundos, sin esperas ni llamadas.',
+         'link' => route('barberia'), 'linkText' => 'Ver servicios y precios', 'linkHover' => 'hover:border-zinc-500 hover:text-white',
+         'bg' => 'bg-zinc-900', 'grad' => 'from-red-950/60 via-zinc-900 to-black', 'bar' => 'bg-red-800',
+         'pattern' => 'background-image:linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);background-size:40px 40px'],
+        ['type' => 'tatuajes', 'tag' => 'Tattoo Studio · 2 Sucursales en Getafe', 'tagColor' => 'text-amber-800',
+         'title' => '¿LISTO PARA<br>TU PRÓXIMO<br>TATUAJE?', 'text' => 'Escríbenos por WhatsApp a tu sucursal y cuéntanos tu idea.',
+         'link' => route('tatuajes'), 'linkText' => 'Ver galería de trabajos', 'linkHover' => 'hover:border-amber-700/50 hover:text-amber-600',
+         'bg' => 'bg-black', 'grad' => 'from-amber-950/40 via-zinc-950 to-black', 'bar' => 'bg-amber-700',
+         'pattern' => 'background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1px);background-size:28px 28px'],
+        ['type' => 'ropa', 'tag' => 'Ropa · 2 Sucursales en Getafe', 'tagColor' => 'text-zinc-500',
+         'title' => '¿LISTO PARA<br>TU PRÓXIMO<br>LOOK?', 'text' => 'Elige tu ropa online y recógela en la sucursal que prefieras.',
+         'link' => route('tienda'), 'linkText' => 'Ver colección completa', 'linkHover' => 'hover:border-zinc-500 hover:text-white',
+         'bg' => 'bg-zinc-950', 'grad' => 'from-zinc-800/40 via-zinc-950 to-black', 'bar' => 'bg-zinc-500',
+         'pattern' => 'background-image:linear-gradient(45deg,rgba(255,255,255,.08) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.08) 75%,transparent 75%);background-size:20px 20px'],
+    ];
+@endphp
+<section class="grid grid-cols-1 lg:grid-cols-3">
+    @foreach($ctas as $cta)
+    <div class="relative overflow-hidden {{ $cta['bg'] }} group {{ $loop->first ? '' : 'border-t lg:border-t-0 lg:border-l border-zinc-800' }}">
+        <div class="absolute inset-0 bg-gradient-to-br {{ $cta['grad'] }}"></div>
+        <div class="absolute inset-0 opacity-[0.05]" style="{{ $cta['pattern'] }}"></div>
+        <div class="relative z-10 flex flex-col h-full justify-between gap-10 p-8 sm:p-10 xl:p-12" data-reveal>
+            <span class="text-[9px] tracking-[0.5em] uppercase {{ $cta['tagColor'] }}">{{ $cta['tag'] }}</span>
             <div>
-                <h3 class="font-heading text-4xl sm:text-5xl md:text-6xl text-white leading-tight">¿LISTO PARA<br>TU PRÓXIMO<br>CORTE?</h3>
-                <p class="text-zinc-400 text-sm mt-3 mb-7 max-w-xs">Reserva tu cita online en segundos, sin esperas ni llamadas.</p>
-                <div class="flex flex-col gap-3">
-                    <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
-                       class="inline-flex items-center justify-center gap-2 bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors w-full sm:w-auto btn-press">
-                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        Reservar en Booksy
-                    </a>
-                    <a href="{{ route('barberia') }}" class="inline-flex items-center justify-center gap-2 border border-zinc-700 hover:border-zinc-500 text-zinc-400 hover:text-white text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors w-full sm:w-auto btn-press">
-                        Ver servicios y precios
+                <h3 class="font-heading text-4xl sm:text-5xl xl:text-6xl text-white leading-tight">{!! $cta['title'] !!}</h3>
+                <p class="text-zinc-400 text-sm mt-3 mb-7 max-w-xs">{{ $cta['text'] }}</p>
+                <div class="flex flex-col gap-3 w-full max-w-[380px]">
+                    @include('partials.booksy-branches', ['type' => $cta['type'], 'width' => 'w-full'])
+                    <a href="{{ $cta['link'] }}" class="inline-flex items-center justify-center gap-2 border border-zinc-700 {{ $cta['linkHover'] }} text-zinc-400 text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors w-full btn-press">
+                        {{ $cta['linkText'] }}
                     </a>
                 </div>
             </div>
         </div>
-        <div class="absolute top-0 left-0 w-1 h-full bg-red-800 opacity-60"></div>
+        <div class="absolute top-0 left-0 w-1 h-full {{ $cta['bar'] }} opacity-60"></div>
     </div>
-
-    {{-- Tatuajes --}}
-    <div class="relative aspect-square sm:aspect-auto sm:min-h-[420px] overflow-hidden bg-black group border-t sm:border-t-0 sm:border-l border-zinc-800">
-        <div class="absolute inset-0 bg-gradient-to-br from-amber-950/40 via-zinc-950 to-black"></div>
-        <div class="absolute inset-0 opacity-[0.05]" style="background-image:radial-gradient(circle,rgba(255,255,255,.15) 1px,transparent 1px);background-size:28px 28px"></div>
-        <div class="relative z-10 flex flex-col h-full justify-between p-8 sm:p-10 md:p-14" data-reveal>
-            <span class="text-[9px] tracking-[0.5em] uppercase text-amber-800">Tattoo Studio · Leyenda Getafe</span>
-            <div>
-                <h3 class="font-heading text-4xl sm:text-5xl md:text-6xl text-white leading-tight">¿LISTO PARA<br>TU PRÓXIMO<br>TATUAJE?</h3>
-                <p class="text-zinc-400 text-sm mt-3 mb-7 max-w-xs">Cuéntanos tu idea y la hacemos realidad en menos de 48h.</p>
-                <div class="flex flex-col gap-3">
-                    <a href="{{ route('tatuajes') }}#solicitar"
-                       class="inline-flex items-center justify-center gap-2 bg-amber-700 hover:bg-amber-600 text-white text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors w-full sm:w-auto btn-press">
-                        <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                        Enviar propuesta
-                    </a>
-                    <a href="{{ route('tatuajes') }}" class="inline-flex items-center justify-center gap-2 border border-zinc-700 hover:border-amber-700/50 text-zinc-400 hover:text-amber-600 text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors w-full sm:w-auto btn-press">
-                        Ver galería de trabajos
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="absolute top-0 left-0 w-1 h-full bg-amber-700 opacity-60"></div>
-    </div>
+    @endforeach
 </section>
 
 @endsection

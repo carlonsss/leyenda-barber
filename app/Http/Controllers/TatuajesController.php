@@ -25,6 +25,7 @@ class TatuajesController extends Controller
             'name'             => 'required|string|max:255',
             'email'            => 'required|email|max:255',
             'phone'            => 'required|string|max:50',
+            'branch'           => 'required|string|max:255',
             'tattoo_style_id'  => 'required|exists:tattoo_styles,id',
             'body_area'        => 'required|string|max:255',
             'budget'           => 'nullable|numeric|min:0',
@@ -35,6 +36,7 @@ class TatuajesController extends Controller
         $req->name            = $request->name;
         $req->email           = $request->email;
         $req->phone           = $request->phone;
+        $req->branch          = $request->branch;
         $req->tattoo_style_id = $request->tattoo_style_id;
         $req->body_area       = $request->body_area;
         $req->budget          = $request->budget;

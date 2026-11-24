@@ -11,6 +11,7 @@ class Order extends Model
         'customer_name',
         'customer_phone',
         'customer_email',
+        'pickup_branch',
         'notes',
         'status',
         'total_price',

@@ -28,6 +28,12 @@ class OrdersTable
                     ->label('Email')
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                TextColumn::make('pickup_branch')
+                    ->label('Recogida')
+                    ->badge()
+                    ->color('gray')
+                    ->default('—'),
+
                 TextColumn::make('status')
                     ->label('Estado')
                     ->badge()

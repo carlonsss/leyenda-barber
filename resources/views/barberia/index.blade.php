@@ -11,9 +11,12 @@
     $heroUrl = $heroSetting ? asset('storage/' . $heroSetting) : '/images/barberia-hero.jpg';
 
     // Datos para JS — se pasan por script tag, nunca inline en atributos
+    $branches    = \App\Models\SiteSetting::branches();
     $barbersData = $barbers->map(fn($b) => [
         'name'        => $b->name,
         'role'        => $b->role ?? '',
+        'branch'      => $branches[$b->branch - 1]['name'] ?? 'Ambas sucursales',
+        'booksy'      => $branches[$b->branch - 1]['booksy'] ?? null,
         'image'       => $img($b->image),
         'description' => $b->description ?? '',
         'gallery'     => $b->gallery
@@ -76,11 +79,11 @@
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 pt-32 w-full">
         <h1 class="font-heading text-[16vw] sm:text-[12vw] md:text-[9vw] leading-none text-white drop-shadow-2xl">BARBERÍA</h1>
-        <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400 mt-3 block">Barbería · Getafe · Madrid</span>
+        <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400 mt-3 block">Barbería · 2 Sucursales en Getafe</span>
         <div class="h-0.5 w-16 bg-red-800 mt-4"></div>
         <div class="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8 mt-4">
             <p class="text-zinc-300 text-sm sm:text-base max-w-md leading-relaxed">{{ $s('barberia_hero_description', 'Cortes precisos, acabados impecables. Tu barbería de confianza en Getafe y Madrid.') }}</p>
-            <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
+            <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener" x-on:click.prevent="$dispatch('open-booksy')"
                class="flex-none inline-flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors btn-press">
                 <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                 Reservar en Booksy
@@ -148,7 +151,7 @@
             </button>
             @else
             <div class="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center">
-                <svg class="w-8 h-8 text-zinc-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z"/></svg>
+                <img src="/images/logo.png" alt="Leyenda Barber &amp; Tattoo" class="w-3/4 h-3/4 object-contain opacity-80" loading="lazy">
             </div>
             @endif
 
@@ -168,7 +171,7 @@
     </div>
 
     <div class="mt-10 text-center" data-reveal>
-        <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
+        <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener" x-on:click.prevent="$dispatch('open-booksy')"
            class="inline-flex items-center gap-2 bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase px-7 py-3.5 rounded transition-colors btn-press">
             <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             Reservar cita ahora
@@ -212,6 +215,10 @@
                     <div class="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
                         <h3 class="font-heading text-xl sm:text-2xl text-white leading-tight">{{ $barber->name }}</h3>
                         <span class="text-[10px] tracking-widest uppercase text-zinc-400 group-hover:text-red-400 transition-colors duration-300">{{ $barber->role }}</span>
+                        <span class="flex items-center gap-1 mt-1 text-[9px] tracking-[0.25em] uppercase text-red-500/90">
+                            <svg class="w-2.5 h-2.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                            {{ $branches[$barber->branch - 1]['name'] ?? 'Ambas sucursales' }}
+                        </span>
                     </div>
                 </div>
 
@@ -293,18 +300,13 @@
     <div class="absolute inset-0 opacity-[0.04]" style="background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:40px 40px"></div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 flex flex-col sm:flex-row items-center justify-between gap-8 sm:gap-12" data-reveal>
         <div>
-            <span class="text-[10px] tracking-[0.5em] uppercase text-red-800">Reserva Online · Booksy · Getafe</span>
+            <span class="text-[10px] tracking-[0.5em] uppercase text-red-800">Reserva Online · 2 Sucursales en Getafe</span>
             <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-none mt-2">¿CUÁNDO ES<br>TU PRÓXIMO<br>CORTE?</h2>
             <p class="text-zinc-400 text-sm mt-4 max-w-sm leading-relaxed">Sin esperas, sin llamadas. Elige tu barbero y tu hora en segundos.</p>
         </div>
-        <div class="flex-none flex flex-col items-center sm:items-end gap-4">
-            <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
-               class="group flex items-center gap-3 bg-red-800 hover:bg-red-700 text-white px-8 py-5 rounded transition-colors btn-press">
-                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span class="text-sm tracking-widest uppercase font-medium">Reservar en Booksy</span>
-                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-            </a>
-            <span class="text-[10px] tracking-widest uppercase text-zinc-400">Gratis · Sin registro previo</span>
+        <div class="flex-none flex flex-col items-stretch sm:items-end gap-3 w-full sm:w-auto">
+            @include('partials.booksy-branches')
+            <span class="text-[10px] tracking-widest uppercase text-zinc-400 text-center sm:text-right">Gratis · Sin registro previo</span>
         </div>
     </div>
     <div class="absolute top-0 left-0 w-1 h-full bg-red-800 opacity-40"></div>
@@ -336,7 +338,7 @@
                 <span class="text-xs text-zinc-400 tracking-widest uppercase" x-show="svcData.dur" x-text="svcData.dur + ' min'"></span>
             </div>
             <p class="text-zinc-400 text-sm leading-relaxed mt-3" x-show="svcData.desc" x-text="svcData.desc"></p>
-            <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
+            <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener" x-on:click.prevent="$dispatch('open-booksy')"
                class="mt-5 flex items-center justify-center gap-2 bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase px-5 py-3 rounded transition-colors w-full btn-press">
                 Reservar este servicio
             </a>
@@ -379,14 +381,15 @@
                 {{-- Info --}}
                 <div class="flex-1 p-4 sm:p-5 flex flex-col justify-between min-w-0">
                     <div>
-                        <span class="text-[9px] tracking-[0.4em] uppercase text-red-700">Barbero · Getafe</span>
+                        <span class="text-[9px] tracking-[0.4em] uppercase text-red-700" x-text="'Barbero · ' + activeBarber.branch"></span>
                         <h3 class="font-heading text-2xl sm:text-3xl text-white leading-tight mt-0.5" x-text="activeBarber.name"></h3>
                         <p class="text-[10px] tracking-widest uppercase text-zinc-500 mt-0.5" x-text="activeBarber.role"></p>
                         <div class="h-px w-8 bg-red-800 mt-3 mb-3"></div>
                         <p class="text-zinc-400 text-xs sm:text-sm leading-relaxed line-clamp-4" x-show="activeBarber.description" x-text="activeBarber.description"></p>
                         <p class="text-zinc-400 text-xs italic" x-show="!activeBarber.description">Sin descripción.</p>
                     </div>
-                    <a href="https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe#ba_s=sr_1" target="_blank" rel="noopener"
+                    <a :href="activeBarber.booksy || '#'" target="_blank" rel="noopener"
+                       x-on:click="if (!activeBarber.booksy) { $event.preventDefault(); $dispatch('open-booksy') }"
                        class="mt-4 inline-flex items-center justify-center gap-1.5 bg-red-800 hover:bg-red-700 text-white text-[10px] tracking-widest uppercase px-4 py-2.5 rounded transition-colors btn-press">
                         <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         Reservar cita

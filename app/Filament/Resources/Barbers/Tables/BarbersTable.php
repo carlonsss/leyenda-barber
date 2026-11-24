@@ -29,6 +29,12 @@ class BarbersTable
                 TextColumn::make('role')
                     ->label('Rol')
                     ->default('—'),
+                TextColumn::make('branch')
+                    ->label('Sucursal')
+                    ->badge()
+                    ->color('gray')
+                    ->formatStateUsing(fn ($state) => is_numeric($state) ? (\App\Models\SiteSetting::branches()[$state - 1]['name'] ?? 'Ambas') : 'Ambas')
+                    ->default('Ambas'),
                 IconColumn::make('active')
                     ->label('Activo')
                     ->boolean(),

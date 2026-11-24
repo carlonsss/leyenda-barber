@@ -10,6 +10,7 @@ class Barber extends Model
     protected $fillable = [
         'name',
         'role',
+        'branch',
         'description',
         'image',
         'active',

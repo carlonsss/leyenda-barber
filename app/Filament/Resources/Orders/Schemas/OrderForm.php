@@ -31,6 +31,11 @@ class OrderForm
                 ->email()
                 ->nullable(),
 
+            Select::make('pickup_branch')
+                ->label('Sucursal de recogida')
+                ->options(fn () => collect(\App\Models\SiteSetting::branches())->pluck('label', 'label')->all())
+                ->nullable(),
+
             Textarea::make('notes')
                 ->label('Notas del pedido')
                 ->rows(2)

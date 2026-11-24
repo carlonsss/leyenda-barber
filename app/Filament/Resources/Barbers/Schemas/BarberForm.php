@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Barbers\Schemas;
 
+use App\Models\SiteSetting;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -24,6 +26,13 @@ class BarberForm
                 ->placeholder('Ej: Barbero Senior, Especialista en degradados...')
                 ->nullable()
                 ->maxLength(100),
+
+            Select::make('branch')
+                ->label('Sucursal')
+                ->options(fn () => collect(SiteSetting::branches())->mapWithKeys(fn ($b, $i) => [$i + 1 => $b['name']])->all())
+                ->placeholder('Ambas sucursales')
+                ->helperText('Déjalo vacío si trabaja en las dos.')
+                ->nullable(),
 
             Textarea::make('description')
                 ->label('Descripción breve')

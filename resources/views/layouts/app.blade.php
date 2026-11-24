@@ -69,6 +69,7 @@
         $ldPhone = \App\Models\SiteSetting::get('contact_phone', '+34 600 000 000');
         $ldAddr1 = \App\Models\SiteSetting::get('contact_address_line1', 'Getafe, Madrid');
         $ldAddr2 = \App\Models\SiteSetting::get('contact_address_line2', '28901 Getafe, España');
+        $ldB2    = \App\Models\SiteSetting::branches()[1];
     @endphp
     <script type="application/ld+json">{!! json_encode([
       '@context' => 'https://schema.org',
@@ -93,7 +94,20 @@
         ['@type' => 'OpeningHoursSpecification', 'dayOfWeek' => 'Saturday', 'opens' => '10:00', 'closes' => '18:00'],
       ],
       'priceRange' => '€€',
-      'sameAs'    => ['https://www.instagram.com/leyenda_barberia/', 'https://www.instagram.com/leyenda_tattoo06/', 'https://www.instagram.com/leyenda_clothe06/', 'https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe'],
+      'sameAs'    => ['https://www.instagram.com/leyenda_barberia/', 'https://www.instagram.com/leyenda_tattoo06/', 'https://www.instagram.com/leyenda_clothe06/', 'https://booksy.com/es-es/105117_leyenda-barberia_barberia_52975_getafe', 'https://booksy.com/es-es/197760_leyenda-barberia_barberia_52975_getafe'],
+      'department' => [
+        '@type'     => 'HairSalon',
+        'name'      => 'Leyenda Barber & Tattoo — ' . $ldB2['name'],
+        'telephone' => $ldB2['phone'],
+        'address'   => [
+          '@type'           => 'PostalAddress',
+          'streetAddress'   => $ldB2['addr1'],
+          'addressLocality' => 'Getafe',
+          'addressRegion'   => 'Madrid',
+          'addressCountry'  => 'ES',
+          'postalCode'      => '28905',
+        ],
+      ],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
 
     {{-- Google Fonts (non-blocking) --}}
@@ -334,9 +348,13 @@
                             <span class="w-8 h-8 rounded-lg border border-zinc-800 flex items-center justify-center flex-shrink-0 mt-0.5">
                                 <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                             </span>
-                            <div>
-                                <p class="text-sm text-zinc-300">{{ $ftAddr1 }}</p>
-                                @if($ftAddr2)<p class="text-xs text-zinc-400 mt-0.5">{{ $ftAddr2 }}</p>@endif
+                            <div class="space-y-2.5">
+                                @foreach(\App\Models\SiteSetting::branches() as $branch)
+                                <div>
+                                    <p class="text-sm text-zinc-300">{{ $branch['addr1'] }}</p>
+                                    <p class="text-xs text-zinc-400 mt-0.5">{{ $branch['addr2'] }}</p>
+                                </div>
+                                @endforeach
                             </div>
                         </li>
                         <li class="flex items-start gap-3">
@@ -472,9 +490,22 @@
                             <input type="tel" name="customer_phone" required value="{{ old('customer_phone') }}" placeholder="+34 600 000 000"
                                 class="w-full bg-zinc-900 border border-zinc-800 text-white text-sm px-4 py-2.5 rounded focus:outline-none focus:border-red-800 transition-colors placeholder-zinc-600">
                         </div>
-                        <div class="flex items-start gap-2.5 bg-zinc-900/80 border border-zinc-800 rounded-lg px-3 py-3">
-                            <svg class="w-4 h-4 text-red-700 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                            <p class="text-zinc-400 text-xs leading-relaxed"><span class="text-white font-medium">Recogida en tienda.</span> Te contactamos para coordinar.</p>
+                        <div>
+                            <label class="block text-[10px] tracking-widest uppercase text-zinc-400 mb-1.5">Recoger en *</label>
+                            <div class="space-y-2">
+                                @foreach(\App\Models\SiteSetting::branches() as $i => $branch)
+                                <label class="flex items-start gap-2.5 bg-zinc-900/80 border border-zinc-800 has-[:checked]:border-red-800 has-[:checked]:bg-red-900/10 rounded-lg px-3 py-2.5 cursor-pointer transition-colors">
+                                    <input type="radio" name="pickup_branch" value="{{ $branch['label'] }}" required
+                                           {{ old('pickup_branch', $i === session('pickup_branch', 1) - 1 ? $branch['label'] : null) === $branch['label'] ? 'checked' : '' }}
+                                           class="mt-0.5 accent-red-700 flex-shrink-0">
+                                    <span class="text-xs leading-relaxed">
+                                        <span class="block text-white font-medium">{{ $branch['name'] }}</span>
+                                        <span class="block text-zinc-500">{{ $branch['addr1'] }}</span>
+                                    </span>
+                                </label>
+                                @endforeach
+                            </div>
+                            <p class="text-zinc-500 text-[11px] mt-1.5">Recogida en tienda. Te contactamos para coordinar.</p>
                         </div>
                         <div>
                             <label class="block text-[10px] tracking-widest uppercase text-zinc-400 mb-1.5">Notas <span class="text-zinc-600 normal-case tracking-normal">(opcional)</span></label>
@@ -508,7 +539,7 @@
                 <button x-on:click="$store.cart.checkout=true" class="w-full bg-red-800 hover:bg-red-700 text-white text-xs tracking-widest uppercase py-3.5 transition-colors rounded btn-press">
                     Finalizar pedido
                 </button>
-                <p class="text-[10px] text-zinc-600 text-center mt-2 tracking-wide">Recogida en tienda · Getafe</p>
+                <p class="text-[10px] text-zinc-600 text-center mt-2 tracking-wide">Recogida en tienda · 2 sucursales en Getafe</p>
             </div>
         </div>
     </div>
@@ -562,6 +593,46 @@
                         class="text-[11px] tracking-widest uppercase bg-white text-black hover:bg-zinc-200 transition-colors whitespace-nowrap px-5 py-2 rounded-lg font-medium">
                     Aceptar
                 </button>
+            </div>
+        </div>
+    </div>
+
+    {{-- ════════════════════════ MODAL BOOKSY: ELEGIR SUCURSAL ════════════════════════ --}}
+    <div x-data="{ open: false }"
+         x-on:open-booksy.window="open = true"
+         x-on:keydown.escape.window="open = false"
+         x-show="open"
+         x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+         class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+         x-on:click.self="open = false"
+         style="display:none">
+        <div class="relative w-full max-w-2xl bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl overflow-hidden" x-on:click.stop>
+            <div class="h-px bg-gradient-to-r from-red-900/0 via-red-800/70 to-red-900/0"></div>
+            <button type="button" x-on:click="open = false"
+                class="absolute top-3 right-3 w-9 h-9 flex items-center justify-center rounded-full bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-white transition-all"
+                aria-label="Cerrar">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div class="p-6 sm:p-8">
+                <span class="text-[10px] tracking-[0.5em] uppercase text-red-800">Reserva Online · Booksy</span>
+                <h3 class="font-heading text-3xl sm:text-4xl text-white leading-none mt-2">ELIGE TU SUCURSAL</h3>
+                <p class="text-zinc-400 text-sm mt-3">Tenemos dos barberías en Getafe. Elige dónde quieres tu cita.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6">
+                    @foreach(\App\Models\SiteSetting::branches() as $i => $branch)
+                    <a href="{{ $branch['booksy'] }}" target="_blank" rel="noopener" x-on:click="open = false"
+                       class="group relative block bg-red-900/10 border border-red-900/30 hover:bg-red-900/20 hover:border-red-800/60 rounded-xl p-5 transition-all duration-300 btn-press">
+                        <span class="text-[9px] tracking-[0.4em] uppercase text-zinc-500">Sucursal 0{{ $i + 1 }}</span>
+                        <h4 class="font-heading text-2xl text-white leading-tight mt-1">{{ $branch['name'] }}</h4>
+                        <p class="text-zinc-400 text-xs mt-2 leading-relaxed">{{ $branch['addr1'] }}<br>{{ $branch['addr2'] }}</p>
+                        <span class="mt-4 inline-flex items-center gap-1.5 text-[10px] tracking-widest uppercase text-red-500 group-hover:text-red-400 font-medium transition-all group-hover:gap-3">
+                            Reservar aquí
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                        </span>
+                    </a>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

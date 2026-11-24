@@ -10,13 +10,8 @@
 
     $heroSetting = \App\Models\SiteSetting::get('tatuajes_hero_image');
     $heroUrl     = $heroSetting ? asset('storage/' . $heroSetting) : '/images/tatuajes-hero.jpg';
-    $whatsapp    = \App\Models\SiteSetting::get('contact_whatsapp_tattoo')
-                    ?: \App\Models\SiteSetting::get('contact_whatsapp', '34600000000');
-
-    $artistName  = $s('tattoo_artist_name',  'Artista Leyenda');
-    $artistBio   = $s('tattoo_artist_bio',   'Tatuador especializado en realismo y diseño personalizado. Cada pieza es única, trabajada con precisión y dedicación.');
-    $artistStyle = $s('tattoo_artist_style', 'Realismo · Blackwork · Fine Line');
-    $artistImg   = $s('tattoo_artist_image') ? asset('storage/' . $s('tattoo_artist_image')) : null;
+    $branches    = \App\Models\SiteSetting::branches();
+    $waText      = 'Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20un%20tatuaje.';
 
     $worksData = $works->map(fn($w) => [
         'id'       => $w->id,
@@ -66,7 +61,7 @@
         },
 
         artistOpen: false,
-        openArtist() { this.artistOpen = true; document.body.style.overflow = 'hidden'; },
+        openArtist(i) { this.artistOpen = i; document.body.style.overflow = 'hidden'; },
         closeArtist() { this.artistOpen = false; document.body.style.overflow = ''; }
     }"
     x-on:keydown.escape.window="closeLb(); closeArtist()"
@@ -81,12 +76,11 @@
     </div>
     <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 pt-32 w-full">
         <h1 class="font-heading text-[16vw] sm:text-[12vw] md:text-[9vw] leading-none text-white drop-shadow-2xl">TATUAJES</h1>
-        <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400 mt-3 block">Tattoo Studio · Getafe · Madrid</span>
+        <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400 mt-3 block">Tattoo Studio · 2 Sucursales en Getafe</span>
         <div class="h-0.5 w-16 bg-amber-600 mt-4"></div>
         <div class="flex flex-col sm:flex-row sm:items-end gap-4 sm:gap-8 mt-4">
             <p class="text-zinc-300 text-sm sm:text-base max-w-md leading-relaxed">{{ $s('tatuajes_hero_description', 'Arte permanente. Diseño personalizado. Tu tatuaje, creado con precisión en nuestro estudio de Getafe.') }}</p>
-            <a href="https://wa.me/{{ $whatsapp }}?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20un%20tatuaje."
-               target="_blank" rel="noopener"
+            <a href="#solicitar"
                class="flex-none inline-flex items-center gap-2.5 text-white text-xs tracking-widest uppercase px-6 py-3.5 rounded transition-colors btn-press font-medium"
                style="background-color:#25D366">
                 <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -233,14 +227,21 @@
 <section class="bg-zinc-950 border-t border-zinc-900 py-14 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="mb-10" data-reveal>
-            <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400">Tatuadores · Getafe</span>
+            <span class="text-[10px] tracking-[0.5em] uppercase text-zinc-400">Tatuadores · 2 Sucursales en Getafe</span>
             <h2 class="section-title font-heading text-3xl sm:text-4xl md:text-5xl text-white mt-1">NUESTROS ARTISTAS</h2>
         </div>
 
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 max-w-3xl">
+        @foreach($branches as $i => $branch)
+        @php
+            $artistName  = $branch['artist']['name'];
+            $artistStyle = $branch['artist']['style'];
+            $artistImg   = $img($branch['artist']['image']);
+        @endphp
         <button
             type="button"
-            class="group w-full max-w-sm text-left border border-zinc-800 hover:border-amber-700/50 rounded-xl overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600"
-            x-on:click="openArtist()"
+            class="group w-full text-left border border-zinc-800 hover:border-amber-700/50 rounded-xl overflow-hidden transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-600"
+            x-on:click="openArtist({{ $i }})"
             data-reveal
             aria-label="Ver perfil del artista">
             <div class="relative aspect-[4/3] overflow-hidden bg-zinc-900">
@@ -258,7 +259,7 @@
                 </div>
             </div>
             <div class="p-4 sm:p-5">
-                <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Tatuadores · Leyenda Getafe</span>
+                <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Sucursal · {{ $branch['name'] }}</span>
                 <h3 class="font-heading text-2xl text-white mt-0.5">{{ $artistName }}</h3>
                 <p class="text-[10px] tracking-widest uppercase text-zinc-500 mt-0.5">{{ $artistStyle }}</p>
                 <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
@@ -267,6 +268,8 @@
                 </div>
             </div>
         </button>
+        @endforeach
+        </div>
     </div>
 </section>
 
@@ -288,14 +291,19 @@
                 <svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
             </div>
             <h3 class="font-heading text-2xl text-white mb-1">Escríbenos por WhatsApp</h3>
-            <p class="text-zinc-500 text-sm mb-5">Respuesta rápida · Sin esperas · Sin formularios</p>
-            <a href="https://wa.me/{{ $whatsapp }}?text=Hola%2C%20he%20visto%20vuestra%20web%20y%20me%20gustar%C3%ADa%20pedir%20informaci%C3%B3n%20sobre%20un%20tatuaje."
-               target="_blank" rel="noopener"
-               class="inline-flex items-center justify-center gap-2.5 text-white text-sm tracking-widest uppercase px-8 py-4 rounded-xl transition-all duration-200 btn-press w-full font-medium"
-               style="background-color:#25D366">
-                <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                Abrir WhatsApp ahora
-            </a>
+            <p class="text-zinc-500 text-sm mb-5">Elige tu sucursal · Respuesta rápida · Sin esperas</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @foreach($branches as $i => $branch)
+                <a href="https://wa.me/{{ $branch['whatsapp_tattoo'] }}?text={{ $waText }}"
+                   target="_blank" rel="noopener"
+                   class="group flex flex-col items-center justify-center text-white px-4 py-4 rounded-xl transition-all duration-200 btn-press hover:brightness-110"
+                   style="background-color:#25D366">
+                    <span class="text-[9px] tracking-[0.35em] uppercase text-white/75">Sucursal 0{{ $i + 1 }}</span>
+                    <span class="text-sm tracking-widest uppercase font-medium mt-0.5">{{ $branch['name'] }}</span>
+                    <span class="text-[11px] text-white/80 mt-0.5">{{ $branch['addr1'] }}</span>
+                </a>
+                @endforeach
+            </div>
         </div>
 
         {{-- Formulario — colapsado por defecto --}}
@@ -345,6 +353,21 @@
                             <input type="email" name="email" required value="{{ old('email') }}" placeholder="tu@email.com"
                                 class="w-full bg-zinc-900 border @error('email') border-red-700 @else border-zinc-800 @enderror text-white text-sm px-4 py-2.5 rounded focus:outline-none focus:border-amber-600 transition-colors placeholder-zinc-600">
                             @error('email')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label class="block text-xs tracking-widest uppercase text-zinc-400 mb-1.5">Sucursal *</label>
+                            <div class="relative">
+                                <select name="branch" required
+                                    class="w-full appearance-none bg-zinc-900 border @error('branch') border-red-700 @else border-zinc-800 @enderror text-white text-sm px-4 py-2.5 rounded focus:outline-none focus:border-amber-600 transition-colors pr-8">
+                                    <option value="" disabled {{ old('branch') ? '' : 'selected' }}>¿En qué sucursal?</option>
+                                    @foreach(\App\Models\SiteSetting::branches() as $branch)
+                                    @php $branchLabel = $branch['label']; @endphp
+                                    <option value="{{ $branchLabel }}" {{ old('branch') === $branchLabel ? 'selected' : '' }}>{{ $branchLabel }}</option>
+                                    @endforeach
+                                </select>
+                                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </div>
+                            @error('branch')<p class="mt-1 text-xs text-red-500">{{ $message }}</p>@enderror
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
@@ -436,7 +459,15 @@
 </div>
 
 {{-- Modal artista --}}
-<div x-show="artistOpen"
+@foreach($branches as $i => $branch)
+@php
+    $artistName  = $branch['artist']['name'];
+    $artistStyle = $branch['artist']['style'];
+    $artistBio   = $branch['artist']['bio'];
+    $artistImg   = $img($branch['artist']['image']);
+    $whatsapp    = $branch['whatsapp_tattoo'];
+@endphp
+<div x-show="artistOpen === {{ $i }}"
      x-transition:enter="transition ease-out duration-250" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
      x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
      class="fixed inset-0 z-50 bg-black/92 backdrop-blur-sm flex items-center justify-center p-4 sm:p-6"
@@ -465,7 +496,7 @@
             {{-- Info --}}
             <div class="flex-1 p-4 sm:p-5 flex flex-col justify-between min-w-0">
                 <div>
-                    <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Tatuadores · Getafe</span>
+                    <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Tatuador · {{ $branch['name'] }}</span>
                     <h3 class="font-heading text-2xl sm:text-3xl text-white leading-tight mt-0.5">{{ $artistName }}</h3>
                     <p class="text-[10px] tracking-widest uppercase text-zinc-500 mt-0.5">{{ $artistStyle }}</p>
                     <div class="h-px w-8 bg-amber-700 mt-3 mb-3"></div>
@@ -515,6 +546,7 @@
         @endif
     </div>
 </div>
+@endforeach
 
 
 {{-- ===== FAQ TATUAJES ===== --}}

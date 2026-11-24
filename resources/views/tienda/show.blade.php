@@ -215,7 +215,7 @@
                 </div>
                 <div>
                     <p class="text-white text-xs font-medium tracking-wide">Producto de recogida en tienda</p>
-                    <p class="text-zinc-500 text-xs leading-relaxed mt-0.5">Este artículo no tiene envío a domicilio. Pasarás a recogerlo en nuestra tienda de Getafe. Te contactaremos para confirmar.</p>
+                    <p class="text-zinc-500 text-xs leading-relaxed mt-0.5">Este artículo no tiene envío a domicilio. Pasarás a recogerlo en la sucursal de Getafe que elijas. Te contactaremos para confirmar.</p>
                 </div>
             </div>
 
