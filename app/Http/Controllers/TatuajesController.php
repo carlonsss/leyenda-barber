@@ -15,8 +15,9 @@ class TatuajesController extends Controller
         $styles = TattooStyle::withCount('works')->get();
         $works  = TattooWork::with('style')->latest()->take(60)->get();
         $faqs   = Faq::forSection('tatuajes');
+        $artists = \App\Models\TattooArtist::where('active', true)->orderByRaw('branch is null, branch')->orderBy('name')->get();
 
-        return view('tatuajes.index', compact('styles', 'works', 'faqs'));
+        return view('tatuajes.index', compact('styles', 'works', 'faqs', 'artists'));
     }
 
     public function store(Request $request)

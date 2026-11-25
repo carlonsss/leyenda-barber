@@ -39,28 +39,16 @@ class SiteSetting extends Model
             ],
         ];
 
-        // Contacto y tatuador por sucursal (sucursal 2 vacía = igual que sucursal 1)
+        // Contacto por sucursal (sucursal 2 vacía = igual que sucursal 1)
         $phone  = static::get('contact_phone', '+34 600 000 000');
         $wa     = static::get('contact_whatsapp', '34600000000');
         $waTat  = static::get('contact_whatsapp_tattoo') ?: $wa;
-        $artist = [
-            'name'  => static::get('tattoo_artist_name', 'Artista Leyenda'),
-            'style' => static::get('tattoo_artist_style', 'Realismo · Blackwork · Fine Line'),
-            'bio'   => static::get('tattoo_artist_bio', 'Tatuador especializado en realismo y diseño personalizado. Cada pieza es única, trabajada con precisión y dedicación.'),
-            'image' => static::get('tattoo_artist_image'),
-        ];
 
-        $branches[0] += ['phone' => $phone, 'whatsapp' => $wa, 'whatsapp_tattoo' => $waTat, 'artist' => $artist];
+        $branches[0] += ['phone' => $phone, 'whatsapp' => $wa, 'whatsapp_tattoo' => $waTat];
         $branches[1] += [
             'phone'           => static::get('contact2_phone') ?: $phone,
             'whatsapp'        => static::get('contact2_whatsapp') ?: $wa,
             'whatsapp_tattoo' => static::get('contact2_whatsapp_tattoo') ?: $waTat,
-            'artist'          => [
-                'name'  => static::get('tattoo2_artist_name') ?: $artist['name'],
-                'style' => static::get('tattoo2_artist_style') ?: $artist['style'],
-                'bio'   => static::get('tattoo2_artist_bio') ?: $artist['bio'],
-                'image' => static::get('tattoo2_artist_image') ?: $artist['image'],
-            ],
         ];
 
         foreach ($branches as &$b) {

@@ -223,7 +223,8 @@
 </section>
 @endif
 
-{{-- ═══ ARTISTA ═══ --}}
+{{-- ═══ ARTISTAS ═══ --}}
+@if($artists->count() > 0)
 <section class="bg-zinc-950 border-t border-zinc-900 py-14 sm:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div class="mb-10" data-reveal>
@@ -232,11 +233,11 @@
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 max-w-3xl">
-        @foreach($branches as $i => $branch)
+        @foreach($artists as $i => $artist)
         @php
-            $artistName  = $branch['artist']['name'];
-            $artistStyle = $branch['artist']['style'];
-            $artistImg   = $img($branch['artist']['image']);
+            $artistName  = $artist->name;
+            $artistStyle = $artist->style;
+            $artistImg   = $img($artist->image);
         @endphp
         <button
             type="button"
@@ -259,7 +260,7 @@
                 </div>
             </div>
             <div class="p-4 sm:p-5">
-                <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Sucursal · {{ $branch['name'] }}</span>
+                <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">{{ isset($branches[$artist->branch - 1]) ? 'Sucursal · ' . $branches[$artist->branch - 1]['name'] : 'Ambas sucursales' }}</span>
                 <h3 class="font-heading text-2xl text-white mt-0.5">{{ $artistName }}</h3>
                 <p class="text-[10px] tracking-widest uppercase text-zinc-500 mt-0.5">{{ $artistStyle }}</p>
                 <div class="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800">
@@ -272,6 +273,7 @@
         </div>
     </div>
 </section>
+@endif
 
 {{-- ═══ CONTACTO — WhatsApp primario + form secundario ═══ --}}
 <section id="solicitar" class="bg-black border-t border-zinc-900 py-16 sm:py-24">
@@ -459,13 +461,14 @@
 </div>
 
 {{-- Modal artista --}}
-@foreach($branches as $i => $branch)
+@foreach($artists as $i => $artist)
 @php
-    $artistName  = $branch['artist']['name'];
-    $artistStyle = $branch['artist']['style'];
-    $artistBio   = $branch['artist']['bio'];
-    $artistImg   = $img($branch['artist']['image']);
-    $whatsapp    = $branch['whatsapp_tattoo'];
+    $artistBranch = $branches[$artist->branch - 1] ?? null;
+    $artistName   = $artist->name;
+    $artistStyle  = $artist->style;
+    $artistBio    = $artist->bio;
+    $artistImg    = $img($artist->image);
+    $whatsapp     = ($artistBranch ?? $branches[0])['whatsapp_tattoo'];
 @endphp
 <div x-show="artistOpen === {{ $i }}"
      x-transition:enter="transition ease-out duration-250" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
@@ -496,7 +499,7 @@
             {{-- Info --}}
             <div class="flex-1 p-4 sm:p-5 flex flex-col justify-between min-w-0">
                 <div>
-                    <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">Tatuador · {{ $branch['name'] }}</span>
+                    <span class="text-[9px] tracking-[0.4em] uppercase text-amber-700">{{ $artistBranch ? 'Tatuador · ' . $artistBranch['name'] : 'Tatuador · Ambas sucursales' }}</span>
                     <h3 class="font-heading text-2xl sm:text-3xl text-white leading-tight mt-0.5">{{ $artistName }}</h3>
                     <p class="text-[10px] tracking-widest uppercase text-zinc-500 mt-0.5">{{ $artistStyle }}</p>
                     <div class="h-px w-8 bg-amber-700 mt-3 mb-3"></div>
